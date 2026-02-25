@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+</head>
+<body>
+    <a id="close-button" href="{% url 'flat' %}" class="btn btn-success">Закрыть</a>
+    <div class="flat_filter">
+        <form class="filter-params" method="get">
+            <label class="parametr">Тип помещений:</label>
+            <select name="rooms">
+                <option value="">Любое</option>
+                <option value="1">Квартира</option>
+                <option value="2">Кладовка</option>
+                <option value="3">Паркинг</option>
+            </select><br><br>
+            <span class="parametr">Этаж: от <input type="number" name="min_florr" value="{{ request.GET.min_floor }}"> до <input type="number" name="max_floor" value="{{ request.GET.max_floor }}"><br><br></span>
+            <span class="parametr">Количество комнат:</span>
+            <select name="rooms">
+                <option value="">Любое</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select><br><br>
+            <span class="parametr">Цена: от <input type="number" name="min_price" value="{{ request.GET.min_price }}"> до <input type="number" name="max_price" value="{{ request.GET.max_price }}"><br><br></span>
+            <a id="" class="btn btn-success" type="submit">Поиск</a>
+        </form>
+    </div>
+</body>
+</html>

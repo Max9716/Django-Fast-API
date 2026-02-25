@@ -1,0 +1,273 @@
+body {
+    background: #2c2c2c
+}
+aside {
+    float: left;
+    background: #bbbbbb;
+    width: 20%;
+    padding: 0.5%;
+    height: 100vh;
+    color: black;
+    border-right: 5px solid #4d4d4d;
+}
+aside img {
+    width: 140px;
+    float: left
+}
+aside img:hover {
+    transform: scale(1.05);
+    border: 1px solid #4d4d4d;
+}
+aside .logo {
+    font-size: 40px;
+    margin-left: 50px;
+    font-weight: bold;
+    position: relative;
+    right: -10px
+}
+aside ul {list-style: none}
+aside ul li {
+    color: black;
+    display: block;
+    margin: 100px;
+    transition: all .6s ease;
+    text-decoration: none;
+    font-size: 30px;
+}
+aside ul li:hover, aside ul a:hover {
+    color: #eb5959;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+aside ul a {
+    text-decoration: none;
+}
+ul .icon {
+    width: 40px;
+    float: left;
+    display: flex;
+    margin-right: 8px
+}
+main .news_list {
+    float: left;
+    color: #fff;
+    margin-top: 100px;
+    text-align: center;
+    width: 75%
+}
+main h1, main p {
+    color: #fff;
+    font-size: 40px;
+    text-align: center;
+}
+form.application {
+    margin-left: 32%;
+    width: 500px;
+    margin-top: 50px;
+}
+div.features {
+    float: left;
+    color: #fff;
+    margin-top: 100px;
+    text-align: center;
+    width: 75%;
+}
+table {
+    color: white;
+}
+th {
+   width: 400px;
+   padding: 15px;
+}
+tr:hover {
+    border: 1px solid #4d4d4d;
+    background-color: green;
+}
+img.plan_flat {
+    width: 100px;
+    height: 100px;
+}
+img.plan_flat:hover {
+    color: #eb5959;
+    transform: scale(4.05);
+    text-decoration: none;
+}
+div.next_flat {
+    display: flex;
+    margin: 0 auto;
+    gap: 10px;
+    justify-content: center;
+}
+span.page-info {
+    color: white;
+    margin-left: 100px;
+}
+a.parameters_of_table {
+    text-decoration: none;
+    display: block;
+    color: white;
+}
+#filter {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5%;
+}
+#filter button {
+    margin-top: 10px;
+}
+#filterModal {
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    align-items:center;
+    justify-content:center;
+}
+div.header {
+    justify-content:center;
+}
+
+/* Модальное окно квартиры */
+#plans {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+#plans img {
+    width: 200px;
+    height: 200px;
+    display: flex;
+}
+dialog[id^="modal-"] {
+    width: 800px;
+    height: 650px;
+    padding: 0px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    font-size: 30px;
+}
+#status {
+    background-color: green;
+    width: 100%;
+    padding: 0px;
+}
+.x {
+    width: 100%;
+    padding: 0px;
+    border: 0px;
+    background-color: grey;
+    opacity: 0.2;
+}
+#flat-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex: 0;
+}
+div.flat-info-1-1 {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    font-size: 20px;
+    width: 50%;
+    padding: 5px;
+    border: 1px solid black;
+}
+div.flat-info-1-2 {
+    display: 1 1 50%;
+    font-size: 20px;
+    width: 50%;
+    padding: 5px;
+    border: 1px solid black;
+}
+div.flat-info-1-3 {
+    display: 1 1 100%;
+    font-size: 20px;
+    width: 100%;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;   /* горизонтальный скролл */
+        overflow-y: auto;   /* вертикальный скролл, если много строк */
+        -webkit-overflow-scrolling: touch;
+    }
+    div.entry {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    body {
+        background: #2c2c2c;
+        width: 100%;
+        height: 100%;
+    }
+    aside {
+        width: 100%;
+        height: 12vh;
+    }
+    main {
+        height: 88%;
+        width: 100%;
+    }
+    aside img {
+        width: 100px;
+        height: 10vh;
+        float: left;
+    }
+    p > img {
+       border: 1px solid #4d4d4d;
+    }
+    span.logo {
+        font-size: 0px;
+    }
+    a > li {
+        display: none;
+        font-size: 0px;
+    }
+    aside ul {
+        display: flex;
+        margin-top: -18px;
+        gap: 15px;
+        list-style: none;
+        padding: 5px;
+        margin: 1;
+        border-left: 1px solid black;
+    }
+    aside ul li {
+        display: none;
+    }
+    #filter .header {
+        display: flex;
+        margin-top: 11vh;
+        justify-content: center;
+    }
+    #filter .header .btn {
+        width: 100vw;
+        text-align: center;
+    }
+    dialog[id^="modal-"] {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100dvw !important;
+        height: 100dvh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        background: #f0f0f0 !important;
+        font-size: 20px !important;
+        overflow: auto;   /* если контента много, пусть появляется скролл внутри */
+    }
+}

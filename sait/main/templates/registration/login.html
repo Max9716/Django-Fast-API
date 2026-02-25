@@ -1,0 +1,37 @@
+<div class="entry">
+    <h2>Вход</h2>
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" name="login_submit">Войти</button>
+      <button id="open-registration" type="button">Регистрация</button>
+    </form>
+
+    <dialog id="registration-modal">
+      <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {{ register_form.username }}
+          {{ register_form.email }}
+          <br><br>
+          {{ register_form.password1 }}
+          {{ register_form.password2 }}
+          <input type="submit" name="register_submit" value="Зарегистрироваться">
+        <button type="button" id="close-registration">Закрыть</button>
+      </form>
+
+      {% if register_form.errors %}
+        <div class="errors">
+            {{ register_form.errors }}
+        </div>
+      {% endif %}
+    </dialog>
+</div>
+<script>
+const modal = document.getElementById('registration-modal');
+const openBtn = document.getElementById('open-registration');
+const closeBtn = document.getElementById('close-registration');
+
+openBtn.addEventListener('click', () => modal.showModal());
+closeBtn.addEventListener('click', () => modal.close());
+</script>
+

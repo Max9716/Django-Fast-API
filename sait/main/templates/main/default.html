@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<script>
+  setTimeout(function() {
+    window.location.href = "{% url 'logout' %}";
+  }, 7200000);
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+</head>
+<body>
+    <aside>
+        <a href="{% url 'home' %}"><img src="{% static 'main/img/logo.png' %}" alt="Логотип"></a>
+        <span class="logo">Купи коровник</span>
+        <ul>
+            <a href="{% url 'news' %}"><img src="{% static 'main/img/news.svg' %}" class="icon" alt=""><li>Новости</li></a>
+            <a href="{% url 'flat' %}"><img src="{% static 'main/img/flat.svg' %}" class="icon" alt=""><li>Квартиры</li></a>
+            <a href="{% url 'info' %}"><img src="{% static 'main/img/info.svg' %}" class="icon" alt=""><li>О нас</li></a>
+            <a href="{% url 'application' %}" class="btn btn">Отправить заявку</a>
+        </ul>
+    </aside>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

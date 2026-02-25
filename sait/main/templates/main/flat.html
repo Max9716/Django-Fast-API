@@ -1,0 +1,230 @@
+{% extends "main/default.html" %}
+
+{% load static %}
+
+{% block title %}Квартиры{% endblock %}
+
+{% block content %}
+    <div id="filter">
+        <div class="header">
+            <button class="btn btn-success" onclick="openFilter()">Фильтр</button>
+        </div>
+        <dialog id="filterModal">
+            <div class="header">
+              <button class="close-button" id="closeBtn">Х</button>
+            </div><br>
+            <div class="body">
+              <div>
+                <label for="complex">ЖК</label>
+                <select id="complex">
+                    <option value=""{% if not request.GET.complex %}selected{% endif %}>Любой</option>
+                    {% for complex in complexes %}
+                        <option value="{{ complex }}"{% if request.GET.complex == complex %}selected{% endif %}>{{ complex }}</option>
+                    {% endfor %}
+                </select>
+              </div><br>
+              <div>
+                <label for="rooms">Количество комнат</label>
+                <select id="rooms">
+                  <option value=""{% if not request.GET.rooms %}selected{% endif %}>Любое</option>
+                  <option value="1"{% if request.GET.rooms == "1" %}selected{% endif %}>1</option>
+                  <option value="2"{% if request.GET.rooms == "2" %}selected{% endif %}>2</option>
+                  <option value="3"{% if request.GET.rooms == "3" %}selected{% endif %}>3+</option>
+                </select>
+                <label for="floor">Этаж</label>
+                <select id="floor">
+                  <option value=""{% if not request.GET.floor %}selected{% endif %}>Любой</option>
+                  <option value="1"{% if request.GET.floor == "1" %}selected{% endif %}>1</option>
+                  <option value="2-5"{% if request.GET.floor == "2-5" %}selected{% endif %}>2-5</option>
+                  <option value="6+"{% if request.GET.floor == "6+" %}selected{% endif %}>6+</option>
+                </select>
+              </div><br>
+              <div>
+                <label for="priceMin">Цена от</label>
+                <input type="number" id="priceMin" placeholder="0 ₽" />
+                <label for="priceMax"> до </label>
+                <input type="number" id="priceMax" placeholder="Любая" />
+              </div><br>
+              <button class="apply-btn" onclick="applyFilter()">Применить фильтр</button>
+              <button class="close-button" onclick="resetFilter()">Сбросить</button>
+            </div>
+        </dialog>
+        <script>
+            const modal = document.getElementById('filterModal');
+            const closeBtn = document.getElementById('closeBtn');
+
+            function openFilter() {
+            modal.showModal();
+            }
+
+            closeBtn.addEventListener('click', () => modal.close());
+
+            function applyFilter() {
+            const rooms = document.getElementById('rooms').value;
+            const priceMin = document.getElementById('priceMin').value;
+            const priceMax = document.getElementById('priceMax').value;
+            const floor = document.getElementById('floor').value;
+            const complex = document.getElementById('complex').value;
+
+            const params = new URLSearchParams();
+
+            if (rooms) params.append('rooms', rooms);
+            if (priceMin) params.append('priceMin', priceMin);
+            if (priceMax) params.append('priceMax', priceMax);
+            if (floor) params.append('floor', floor);
+            if (complex) params.append('complex', complex);
+
+            window.location.search = params.toString(); // перезагрузка со строкой фильтра
+            }
+            function resetFilter() {
+                window.location.search = '';
+            }
+        </script>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    <a href="?sort=flat_type&order=asc" class="parameters_of_table">Тип помещения</a>
+                </th>
+                <th>
+                    <a href="?sort=number&order=asc" class="parameters_of_table">Номер</a>
+                </th>
+                <th>
+                    <a href="?sort=floor&order=asc" class="parameters_of_table">Этаж</a>
+                </th>
+                <th>
+                    <a href="?sort=section&order=asc" class="parameters_of_table">Секция</a>
+                </th>
+                <th>
+                    <a href="?sort=complex&order=asc" class="parameters_of_table">ЖК</a>
+                </th>
+                <th>
+                    <a href="?sort=price&order=asc" class="parameters_of_table">Цена</a>
+                </th>
+                <th>
+                    <a href="?sort=decoration&order=asc" class="parameters_of_table">Отделка</a>
+                </th>
+                <th>
+                    <a href="?sort=status&order=asc" class="parameters_of_table">Статус</a>
+                </th>
+            </tr>
+            {% for flat in page_obj %}
+                <tr id="{{ flat.id_flat }}" onclick="document.getElementById('modal-{{ flat.id_flat }}').showModal()">
+                    <th>
+                        <img
+                                src="{{ flat.plan }}"
+                                onclick="event.stopPropagation(); openImage(this.src)"
+                                onerror="
+                                if(!this.dataset.attempt){
+                                    this.dataset.attempt=1;
+                                    this.src='{{ flat.floor_plan }}';
+                                } else {
+                                    this.src='{% static 'main/img/error.png' %}';
+                                }
+                                "
+                                class="plan_flat"
+                                alt="Планировка">
+                    </th>
+                    <th>
+                        <span class="parametrs of table" >{{ flat.flat_type }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.number }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.floor }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.section }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.complex }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.price }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.decoration }}</span>
+                    </th>
+                    <th>
+                        <span class="parametrs of table">{{ flat.status }}</span>
+                    </th>
+                </tr>
+                <dialog id="modal-{{ flat.id_flat }}">
+                    <button id="closeBtn-{{ flat.id_flat }}" onclick="this.closest('dialog').close()" class="x">X</button><br><br>
+                    <div id="plans">
+                        <img src="{{ flat.plan }}" onclick="event.stopPropagation(); openImage(this.src)">
+                        <img src="{{ flat.floor_plan }}" onclick="event.stopPropagation(); openImage(this.src)"><br>
+                    </div><br>
+                    <div id="flat-info">
+                        <div id="status">{{ flat.status }}</div>
+                        <div class="flat-info-1-1">
+                            <div><div class="flat-info-2">ЖК - {{ flat.complex }}</div></div><br>
+                            <div><div class="flat-info-2">Корпус - {{ flat.house }}</div></div><br>
+                            <div><div class="flat-info-2">Секция - {{ flat.section }}</div></div>
+                        </div>
+                        <div class="flat-info-1-2">
+                            <div><div class="flat-info-2">Номер - {{ flat.number }}</div></div>
+                            <div><div class="flat-info-2">Номер на этаже - {{ flat.number_on_floor }}</div></div>
+                            <div><div class="flat-info-2">Тип помещения - {{ flat.flat_type }}</div></div>
+                            <div><div class="flat-info-2">Комнат - {{ flat.rooms }}</div></div>
+                            <div><div class="flat-info-2">Этаж - {{ flat.floor }}</div></div>
+                            <div><div class="flat-info-2">Отделка - {{ flat.decoration }}</div></div>
+                        </div>
+                        <div class="flat-info-1-3">
+                            <div><div class="flat-info-2">Цена - {{ flat.price }}</div></div>
+                            <div><div class="flat-info-2">Цена базовая - {{ flat.price_base }}</div></div>
+                        </div>
+                    </div>
+                </dialog>
+                 <script>
+                    const modal = document.getElementById("modal-{{ flat.id_flat }}");
+                    const closeBtn = document.getElementById("closeBtn-{{ flat.id_flat }}");
+
+                    function open{{ flat.id_flat }}() {
+                    modal.showModal();
+                    }
+
+                    closeBtn.addEventListener('click', () => modal.close());
+                </script>
+                <dialog id="imageModal">
+                  <img id="modalImage" src="" alt="Планировка"
+                       style="max-width: 90vw; max-height: 90vh; display: block; margin: auto;">
+                </dialog>
+                <script>
+                  const imageModal = document.getElementById('imageModal');
+                  const modalImage = document.getElementById('modalImage');
+
+                  function openImage(src) {
+                    modalImage.src = src;
+                    imageModal.showModal();
+                  }
+
+                  // закрытие при клике вне картинки
+                  imageModal.addEventListener('click', (e) => {
+                    if (e.target === imageModal) {
+                      imageModal.close();
+                    }
+                  });
+                </script>
+            {% endfor %}
+        </thead>
+    </table>
+    <span class="page-info">
+        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+    <div class="next_flat">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if query_params %}&{{ query_params }}{% endif %}" class="btn btn-secondary">В начало</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if query_params %}&{{ query_params }}{% endif %}" class="btn btn-secondary">Предыдущая</a>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if query_params %}&{{ query_params }}{% endif %}" class="btn btn-success">Следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if query_params %}&{{ query_params }}{% endif %}" class="btn btn-success">В конец</a>
+        {% endif %}
+    </div>
+
+{% endblock %}
